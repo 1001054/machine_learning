@@ -118,5 +118,3 @@ def show_surface():
     plt.ylabel("theta1")
     plt.show()
 
-
-

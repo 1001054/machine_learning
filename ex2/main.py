@@ -1,16 +1,60 @@
-# This is a sample Python script.
+import matplotlib.pyplot as plt
+import numpy as np
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Multivariate linear regression
 
+# The title:
+# Suppose that you are the administrator of a university department and
+# you want to determine each applicant’s chance of admission based on their
+# results on two exams. You have historical data from previous applicants
+# that you can use as a training set for logistic regression. For each training
+# example, you have the applicant’s scores on two exams and the admissions
+# decision.
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+# get the training set
+def get_data():
+    pass_score1 = []
+    pass_score2 = []
+    fail_score1 = []
+    fail_score2 = []
 
+    with open(r"ex2data1.txt", "r") as f:
+        for line in f.readlines():
+            temp = line.split(",")
+            if int(temp[2]) == 1:
+                pass_score1.append(float(temp[0]))
+                pass_score2.append(float(temp[1]))
+            else:
+                fail_score1.append(float(temp[0]))
+                fail_score2.append(float(temp[1]))
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    return (pass_score1, pass_score2, fail_score1, fail_score2)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# show the samples
+def show_samples():
+    (pass_score1, pass_score2, fail_score1, fail_score2) = get_data()
+
+    plt.scatter(pass_score1, pass_score2, marker="+", color="black")
+    plt.scatter(fail_score1, fail_score2, marker="o", color="yellow")
+    plt.xticks(range(30, 101, 10))
+    plt.yticks(range(30, 101, 10))
+    plt.xlabel("Exam 1 score")
+    plt.ylabel("Exam 2 score")
+    plt.show()
+
+# the logistic regression hypothesis is a sigmoid function whose shape is 'S'
+# For large positive values of x, the sigmoid should be close to 1, while for large
+# negative values, the sigmoid should be close to 0. Evaluating sigmoid(0) should
+# give you exactly 0.5.
+def sigmoid(z):
+    res = []
+
+    for num in z:
+        res.append(1 / (1 + np.exp(-num)))
+
+    return res
+
+# the cost function of the logistic regression
+def cost_function(theta, X, y):
+    return
+
