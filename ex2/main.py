@@ -11,7 +11,7 @@ import numpy as np
 # example, you have the applicant’s scores on two exams and the admissions
 # decision.
 
-# get the training set
+# get the pass and failed training set
 def get_data():
     pass_score1 = []
     pass_score2 = []
@@ -29,6 +29,21 @@ def get_data():
                 fail_score2.append(float(temp[1]))
 
     return (pass_score1, pass_score2, fail_score1, fail_score2)
+
+# get all the training data
+def get_raw_data():
+    score1 = []
+    score2 = []
+    is_admitted = []
+
+    with open(r"ex2data1.txt", "r") as f:
+        for line in f.readlines():
+            temp = line.split(",")
+            score1.append(float(temp[0]))
+            score2.append(float(temp[1]))
+            is_admitted.append(int(temp[2]))
+
+    return (score1, score2, is_admitted)
 
 # show the samples
 def show_samples():
@@ -56,5 +71,6 @@ def sigmoid(z):
 
 # the cost function of the logistic regression
 def cost_function(theta, X, y):
+    (score1, score2, )
     return
 
