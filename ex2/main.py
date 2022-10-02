@@ -62,26 +62,18 @@ def show_samples():
 # negative values, the sigmoid should be close to 0. Evaluating sigmoid(0) should
 # give you exactly 0.5.
 def sigmoid(z):
-    res = []
-
-    for row in z:
-        res_row = []
-        for num in row:
-            res_row.append(1 / (1 + np.exp(-num)))
-        res.append(res_row)
-
-    return np.matrix(res)
+    return 1 / (1 + np.exp(-1 * z))
 
 # the cost function of the logistic regression
 # this function will return the cost and the gradient
 def cost_function(theta, X, y):
     m = len(y)
-    ones = np.ones(m)
+    ones = np.matrix(np.ones(m))
 
     # calculate the cost
     H = sigmoid(theta * X)
     temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
-    J = temp * ones.T * m * -1
+    J = temp * ones.T / m * -1
 
     # calculate the gradient
     grad1 = ((H - y) * X[0].T)[0, 0] / m
@@ -91,7 +83,11 @@ def cost_function(theta, X, y):
     return (J, (grad1, grad2, grad3))
 
 (score1, score2, isadmitted) = get_raw_data()
-X = np.matrix(np.ones(len(score1)), score1, score2)
+m = len(score1)
+X = np.matrix([np.ones(m), score1, score2])
 theta = [0, 0, 0]
 (J, grad) = cost_function(theta, X, isadmitted)
 print(J)
+
+
+
