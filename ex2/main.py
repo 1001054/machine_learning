@@ -56,6 +56,12 @@ def show_samples():
     plt.yticks(range(30, 101, 10))
     plt.xlabel("Exam 1 score")
     plt.ylabel("Exam 2 score")
+
+# show the decision boundary
+def show_decision_boundary(theta):
+    x = np.linspace(30, 90)
+    y = (theta[0] + theta[1] * x) / theta[2] * -1
+    plt.plot(x, y)
     plt.show()
 
 # the logistic regression hypothesis is a sigmoid function whose shape is 'S'
@@ -90,14 +96,28 @@ def gradient(theta, X, y):
 
     return (grad1, grad2, grad3)
 
+# calculate the probability of pass the exam
+def predicate(theta, score):
+    return sigmoid(theta[0] + theta[1] * score[0] + theta[2] * score[1])
+
 
 (score1, score2, isadmitted) = get_raw_data()
 m = len(score1)
 X = np.matrix([np.ones(m), score1, score2])
 theta = [0, 0, 0]
+
 # an optimization solver that finds the minimum of an unconstrained function
 result = op.minimize(fun=cost_function, x0=theta, args=(X, isadmitted), method='TNC', jac=gradient)
 print(result)
+
+# predicate a sample
+theta = result.get("x")
+# print(predicate(theta, (45, 85)))
+
+# show the diagram
+show_samples()
+show_decision_boundary(theta)
+
 
 
 
