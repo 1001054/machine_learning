@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import scipy.optimize as op
 
 # Multivariate linear regression
 
@@ -75,19 +76,28 @@ def cost_function(theta, X, y):
     temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
     J = temp * ones.T / m * -1
 
+    return J
+
+# to gradient decient the theta just one time
+def gradient(theta, X, y):
+    m = len(y)
+    H = sigmoid(theta * X)
+
     # calculate the gradient
     grad1 = ((H - y) * X[0].T)[0, 0] / m
     grad2 = ((H - y) * X[1].T)[0, 0] / m
     grad3 = ((H - y) * X[2].T)[0, 0] / m
 
-    return (J, (grad1, grad2, grad3))
+    return (grad1, grad2, grad3)
+
 
 (score1, score2, isadmitted) = get_raw_data()
 m = len(score1)
 X = np.matrix([np.ones(m), score1, score2])
 theta = [0, 0, 0]
-(J, grad) = cost_function(theta, X, isadmitted)
-print(J)
+# an optimization solver that finds the minimum of an unconstrained function
+result = op.minimize(fun=cost_function, x0=theta, args=(X, isadmitted), method='TNC', jac=gradient)
+print(result)
 
 
 
