@@ -54,5 +54,49 @@ def show_samples():
     plt.ylabel("Microchip test2")
     plt.show()
 
+# map all features of six power
+def map_feature(x1, x2):
+    res = []
 
-show_samples()
+    for i in range(0, 7):
+        temp = []
+        for j in range(0, i + 1):
+            temp.append(np.power(x1, j) * np.power(x2, (i - j)))
+        res.append(temp.copy())
+
+    return res
+
+# sigmoid function
+def sigmoid(z):
+    return 1 / (1 + np.exp(-1 * z))
+
+# Compute cost for logistic regression with regularization
+def cost_function(theta, X, y, lam):
+    m = len(y)
+    ones = np.matrix(np.ones(m))
+
+    H = sigmoid(theta * X)
+    temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
+    J = temp * ones.T * -1 / m + (np.multiply(theta, theta) * ones.T - theta[0] * theta[0]) * lam / 2 / m
+
+    return J
+
+# Compute gradient for logistic regression with regularization
+def gradient(theta, X, y, lam):
+    j = len(theta)
+    m = len(y)
+    H = sigmoid(theta * X)
+
+    # calculate the gradient
+    grad = ((H - y) * X.T) / m
+    for i in range(1, j + 1):
+        grad[i] += lam * theta[i] / m
+
+    return grad
+
+(x1, x2, y) = get_raw_data()
+m = len(y)
+X = np.matrix(map_feature(x1, x2))
+print(X)
+# theta = np.zeros(m)
+# print(cost_function(theta, X, y, 1000))
