@@ -52,6 +52,15 @@ def show_samples():
     plt.yticks([-0.8, -0.4, 0, 0.4, 0.8, 1.2])
     plt.xlabel("Microchip test1")
     plt.ylabel("Microchip test2")
+
+def show_decision_boundary(theta):
+    u = np.linspace(-1, 1.5, 250)
+    v = np.linspace(-1, 1.5, 250)
+    z = np.zeros([len(u), len(v)])
+    for i in range(len(u)):
+        for j in range(len(v)):
+            z[i, j] = theta * np.matrix(map_feature(u[i], v[j])).T
+    plt.contour(u, v, z, 0)
     plt.show()
 
 # map all features of six power
@@ -59,10 +68,8 @@ def map_feature(x1, x2):
     res = []
 
     for i in range(0, 7):
-        temp = []
         for j in range(0, i + 1):
-            temp.append(np.power(x1, j) * np.power(x2, (i - j)))
-        res.append(temp.copy())
+            res.append(np.power(x1, j) * np.power(x2, (i - j)))
 
     return res
 
@@ -74,10 +81,11 @@ def sigmoid(z):
 def cost_function(theta, X, y, lam):
     m = len(y)
     ones = np.matrix(np.ones(m))
+    ones_28 = np.matrix(np.ones(28))
 
     H = sigmoid(theta * X)
     temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
-    J = temp * ones.T * -1 / m + (np.multiply(theta, theta) * ones.T - theta[0] * theta[0]) * lam / 2 / m
+    J = temp * ones.T * -1 / m + (np.multiply(theta, theta) * ones_28.T - theta[0] * theta[0]) * lam / 2 / m
 
     return J
 
@@ -89,14 +97,22 @@ def gradient(theta, X, y, lam):
 
     # calculate the gradient
     grad = ((H - y) * X.T) / m
-    for i in range(1, j + 1):
-        grad[i] += lam * theta[i] / m
+    for i in range(1, j):
+        grad[0, i] += lam * theta[i] / m
 
-    return grad
+    return grad[0]
+
 
 (x1, x2, y) = get_raw_data()
 m = len(y)
 X = np.matrix(map_feature(x1, x2))
-print(X)
-# theta = np.zeros(m)
-# print(cost_function(theta, X, y, 1000))
+# the init theta
+theta = np.zeros(28)
+# regularization parameter
+# to penalize the theta parameters from 1 to m
+lam = 1
+# an optimization solver that finds the minimum of an unconstrained function
+result = op.fmin_tnc(func=cost_function, x0=theta, fprime=gradient, args=(X, y, lam))
+final_theta = result[0]
+show_samples()
+show_decision_boundary(final_theta)
