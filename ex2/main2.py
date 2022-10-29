@@ -83,6 +83,8 @@ def cost_function(theta, X, y, lam):
     ones = np.matrix(np.ones(m))
     ones_28 = np.matrix(np.ones(28))
 
+    print(len(X))
+    print(len(X[0]))
     H = sigmoid(theta * X)
     temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
     J = temp * ones.T * -1 / m + (np.multiply(theta, theta) * ones_28.T - theta[0] * theta[0]) * lam / 2 / m
