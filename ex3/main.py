@@ -57,24 +57,31 @@ def cost_function(theta, X, y, lam):
     H = sigmoid(X * theta)
     temp = np.multiply(y, np.log(H)) + np.multiply(ones - y, np.log(ones - H))
 
-    # a = ones_401 * np.multiply(theta, theta)
-    # print(len(a))
-    # print(len(a[0]))
-
     J = ones * temp * -1 / m + (ones_401 * np.multiply(theta, theta) - theta[0, 0] * theta[0, 0]) * lam / 2 / m
 
-    return J
+    return J[0, 0]
 
 # calculate the gradient
 def gradient(theta, X, y, lam):
     j = len(theta)
     m = len(y)
-    H = sigmoid(theta * X)
+    theta = np.matrix(theta).T
+    H = sigmoid(X * theta)
+
+
 
     # calculate the gradient
-    grad = ((H - y) * X.T) / m
+    grad = ((H - y).T * X) / m
+
+    # print(len(grad))
+    # print(len(grad[0]))
+    # print(type(grad))
+
     for i in range(1, j):
         grad[0, i] += lam * theta[i] / m
+
+    # print(len(grad))
+    # print(len(grad[0]))
 
     return grad[0]
 
