@@ -43,6 +43,16 @@ def show_images(images):
             plt.xticks([])
             plt.yticks([])
 
+# load and show 100 random images from X
+def load_and_show_hundred_images(X):
+    # get the first hundred samples
+    samples = get_hundred(X)
+    # transfer the data into the image matrix
+    images = generate_image(samples)
+    # show the images
+    show_images(images)
+    plt.show()
+
 # sigmoid function
 def sigmoid(z):
     return 1 / (1 + np.exp(-1 * z))
@@ -67,8 +77,6 @@ def gradient(theta, X, y, lam):
     m = len(y)
     theta = np.matrix(theta).T
     H = sigmoid(X * theta)
-
-
 
     # calculate the gradient
     grad = ((H - y).T * X) / m
@@ -130,21 +138,14 @@ def predicate(X, theta_list):
 
     return (res_label, max_h)
 
-###### show the images ########
 
+###### show the images ########
 # load the all the data from the file
 file = loadmat("ex3data1.mat")
 # get the 5000 images
 X = file.get("X")
 # get the result of the image
 y = file.get("y")
-# # get the first hundred samples
-# samples = get_hundred(X)
-# # transfer the data into the image matrix
-# images = generate_image(samples)
-# # show the images
-# show_images(images)
-# plt.show()
 
 
 ###### learn the parameters ##########
