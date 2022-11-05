@@ -27,6 +27,10 @@ def add_one_cols(X):
     res = np.insert(X, 0, newcols, axis=1)
     return res
 
+# sigmoid function
+def sigmoid(z):
+    return 1 / (1 + np.exp(-1 * z))
+
 # return the max index from the hypothesis arrays
 def get_max(hs):
     res = []
@@ -48,8 +52,8 @@ def get_max(hs):
 # predicate the result of the samples
 # by using neural network
 def predicate(X, theta1, theta2):
-    temp = add_one_cols(X) * theta1.T
-    res = add_one_cols(temp) * theta2.T
+    temp = sigmoid(add_one_cols(X) * theta1.T)
+    res = sigmoid(add_one_cols(temp) * theta2.T) * 100
 
     return res
 
