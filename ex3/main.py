@@ -8,7 +8,7 @@ import random
 # For this exercise, you will use logistic regression and neural networks to
 # recognize handwritten digits (from 0 to 9).
 
-# get one hundred random row from the X
+# get one hundred random rows from the X
 def get_hundred(X):
     res = []
     for i in range(100):
